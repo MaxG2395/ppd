@@ -6,18 +6,22 @@
 #include "bank.h"
 
 bool_t
-xdr_account(XDR *xdrs, account *objp)
+xdr_account(xdrs, objp)
+	XDR *xdrs;
+	account *objp;
 {
 
 	if (!xdr_int(xdrs, &objp->id))
 		return (FALSE);
-	if (!xdr_int(xdrs, &objp->balance))
+	if (!xdr_float(xdrs, &objp->sum))
 		return (FALSE);
 	return (TRUE);
 }
 
 bool_t
-xdr_aux_struct(XDR *xdrs, aux_struct *objp)
+xdr_aux_struct(xdrs, objp)
+	XDR *xdrs;
+	aux_struct *objp;
 {
 
 	if (!xdr_int(xdrs, &objp->id))

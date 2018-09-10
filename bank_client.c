@@ -5,6 +5,7 @@
  */
 
 #include "bank.h"
+#include <stdio.h>
 
 int process, operation;
 int accountID;
@@ -38,7 +39,7 @@ void bank_prog_1(char *host) {
     while(1) {
         printf("\nInform which process to access:\n");
         printf(" 1 - Agency\n");
-        printf(" 2 - ATM Machin\n");
+        printf(" 2 - ATM Machine\n");
         scanf("%d", &process);
 
         switch (process) {
@@ -95,8 +96,8 @@ void bank_prog_1(char *host) {
                         }
                         break;
                     case 4:
-                        printf("\nTo withdraw from an account, plese enter the amount: ");
-                        scanf("%d", withdraw_1_arg);
+                        printf("\nTo withdraw from an account, plese enter the ID and the amount: ");
+                        scanf("%d %f", withdraw_1_arg.id, withdraw_1_arg.sum);
                         result_5 = withdraw_1(&withdraw_1_arg, clnt);
                         if (result_5 == (int *) NULL) {
                             clnt_perror (clnt, "call failed");
@@ -106,9 +107,19 @@ void bank_prog_1(char *host) {
                         }
                         break;
                     case 5:
+                        printf("\nTo deposit into an account, plese enter the ID and the amount: ");
+                        scanf("%d %f", deposit_1_arg.id, deposit_1_arg.sum);
                         result_4 = deposit_1(&deposit_1_arg, clnt);
                         if (result_4 == (int *) NULL) {
                             clnt_perror (clnt, "call failed");
+                        }
+                        else { // CALL SUCCESSFULL
+                            if (*result_4 == 0) {
+                                printf("The amount of %f was added to account %d.\n", deposit_1_arg.sum, deposit_1_arg.id);
+                            }
+                            else {
+                                printf("ERROR! The amount of %f was NOT added to account %d.\n", deposit_1_arg.sum, deposit_1_arg.id);
+                            }
                         }
                         break;
                     case 6:

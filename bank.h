@@ -9,12 +9,11 @@
 #define RPCGEN_VERSION	199506
 
 #include <rpc/rpc.h>
-#include <stdio.h>
 
 
 struct account {
 	int id;
-	int balance;
+	float sum;
 };
 typedef struct account account;
 #ifdef __cplusplus

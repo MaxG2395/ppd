@@ -7,6 +7,7 @@
 #define MAX_ACCOUNTS 10
 
 #include "bank.h"
+#include <stdio.h>
 
 account accountList[MAX_ACCOUNTS] ;
 
@@ -37,9 +38,10 @@ openaccount_1_svc(int *argp, struct svc_req *rqstp)
     if (checkIfAccountAlreadyExists(accountID) != -1)
     {
       accountList[accountID].id = accountID;
+      accountList[accountID].sum = 0;
       result = accountID;
 
-        printf("LOG: account %d successfully created.\n", accountID);
+      printf("LOG: account %d successfully created.\n", accountID);
     }
     else result = -1;
 
@@ -56,8 +58,9 @@ closeaccount_1_svc(int *argp, struct svc_req *rqstp)
 
     if (checkIfAccountAlreadyExists(accountID) == -1)
     {
-      accountList[accountID].id = 0;
-      result = 0;
+        accountList[accountID].id = 0;
+        accountList[accountID].sum = 0;
+        result = 0;
 
         printf("LOG: account %d successfully closed.\n", accountID);
     }
@@ -83,9 +86,19 @@ deposit_1_svc(aux_struct *argp, struct svc_req *rqstp)
 {
     static int  result;
 
-    /*
-     * insert server code here
-     */
+    int accountID = (*argp).id;
+    float accountSum = (*argp).sum;
+
+    printf("LOG: depositAccount(%d) to amount %f service called...\n", accountID), accountSum;
+
+    if (checkIfAccountAlreadyExists(accountID) == -1)
+    {
+        accountList[accountID].sum = accountList[accountID].sum + accountSum;
+        result = 0;
+
+        printf("LOG: account %d successfully deposited %f.\n", accountID, accountSum);
+    }
+    else result = accountID;
 
     return &result;
 }

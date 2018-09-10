@@ -3,14 +3,15 @@
  * It was generated using rpcgen.
  */
 
-#include <memory.h>
 #include "bank.h"
 
 /* Default timeout can be changed using clnt_control() */
 static struct timeval TIMEOUT = { 25, 0 };
 
 int *
-openaccount_1(int *argp, CLIENT *clnt)
+openaccount_1(argp, clnt)
+	int *argp;
+	CLIENT *clnt;
 {
 	static int clnt_res;
 
@@ -21,7 +22,9 @@ openaccount_1(int *argp, CLIENT *clnt)
 }
 
 int *
-closeaccount_1(int *argp, CLIENT *clnt)
+closeaccount_1(argp, clnt)
+	int *argp;
+	CLIENT *clnt;
 {
 	static int clnt_res;
 
@@ -32,7 +35,9 @@ closeaccount_1(int *argp, CLIENT *clnt)
 }
 
 int *
-authaccount_1(int *argp, CLIENT *clnt)
+authaccount_1(argp, clnt)
+	int *argp;
+	CLIENT *clnt;
 {
 	static int clnt_res;
 
@@ -43,7 +48,9 @@ authaccount_1(int *argp, CLIENT *clnt)
 }
 
 int *
-deposit_1(aux_struct *argp, CLIENT *clnt)
+deposit_1(argp, clnt)
+	aux_struct *argp;
+	CLIENT *clnt;
 {
 	static int clnt_res;
 
@@ -54,7 +61,9 @@ deposit_1(aux_struct *argp, CLIENT *clnt)
 }
 
 int *
-withdraw_1(aux_struct *argp, CLIENT *clnt)
+withdraw_1(argp, clnt)
+	aux_struct *argp;
+	CLIENT *clnt;
 {
 	static int clnt_res;
 
@@ -65,7 +74,9 @@ withdraw_1(aux_struct *argp, CLIENT *clnt)
 }
 
 int *
-checkbalance_1(int *argp, CLIENT *clnt)
+checkbalance_1(argp, clnt)
+	int *argp;
+	CLIENT *clnt;
 {
 	static int clnt_res;
 

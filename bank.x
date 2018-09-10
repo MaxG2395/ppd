@@ -1,6 +1,6 @@
 struct account{
   int id;
-  int balance;
+  float sum;
 };
 
 struct aux_struct{
