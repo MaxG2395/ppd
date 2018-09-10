@@ -22,7 +22,7 @@ void bank_prog_1(char *host) {
     aux_struct  deposit_1_arg;
     int  *result_5;
     aux_struct  withdraw_1_arg;
-    int  *result_6;
+    float  *result_6;
     int  checkbalance_1_arg;
 
     process = 0;
@@ -90,31 +90,49 @@ void bank_prog_1(char *host) {
                         break;
                     // Authenticate Account
                     case 3:
+                        printf("\nTo authenticate an account, please enter an ID: ");
+                        scanf("%d", &authaccount_1_arg);
+
                         result_3 = authaccount_1(&authaccount_1_arg, clnt);
                         if (result_3 == (int *) NULL) {
                             clnt_perror (clnt, "call failed");
                         }
+                        else { // CALL SUCCESSFULL
+                            if (*result_3 == -1) {
+                                printf("Account %d was authenticated.\n", authaccount_1_arg);
+                            }
+                            else {
+                                printf("Account %d was not authenticated.\n", authaccount_1_arg);
+                            }
+                        }
                         break;
                     case 4:
                         printf("\nTo withdraw from an account, plese enter the ID and the amount: ");
-                        scanf("%d %f", withdraw_1_arg.id, withdraw_1_arg.sum);
-                        result_5 = withdraw_1(&withdraw_1_arg, clnt);
-                        if (result_5 == (int *) NULL) {
-                            clnt_perror (clnt, "call failed");
-                        }
-                        else { // CALL SUCCESSFULL
-                            // TODO
-                        }
-                        break;
-                    case 5:
-                        printf("\nTo deposit into an account, plese enter the ID and the amount: ");
-                        scanf("%d %f", deposit_1_arg.id, deposit_1_arg.sum);
-                        result_4 = deposit_1(&deposit_1_arg, clnt);
+                        scanf("%d %f", &withdraw_1_arg.id, &withdraw_1_arg.sum);
+
+                        result_4 = withdraw_1(&withdraw_1_arg, clnt);
                         if (result_4 == (int *) NULL) {
                             clnt_perror (clnt, "call failed");
                         }
                         else { // CALL SUCCESSFULL
-                            if (*result_4 == 0) {
+                            if (*result_5 == 0) {
+                                printf("The amount of %f was withdrawn from the account %d.\n", withdraw_1_arg.sum, withdraw_1_arg.id);
+                            }
+                            else {
+                                printf("ERROR! The amount of %f was NOT taken from account %d.\n", withdraw_1_arg.sum, withdraw_1_arg.id);
+                            }
+                        }
+                        break;
+                    case 5:
+                        printf("\nTo deposit into an account, plese enter the ID and the amount: ");
+                        scanf("%d %f", &deposit_1_arg.id, &deposit_1_arg.sum);
+
+                        result_5 = deposit_1(&deposit_1_arg, clnt);
+                        if (result_5 == (int *) NULL) {
+                            clnt_perror (clnt, "call failed");
+                        }
+                        else { // CALL SUCCESSFULL
+                            if (*result_5 == 0) {
                                 printf("The amount of %f was added to account %d.\n", deposit_1_arg.sum, deposit_1_arg.id);
                             }
                             else {
@@ -123,11 +141,23 @@ void bank_prog_1(char *host) {
                         }
                         break;
                     case 6:
+                        printf("\nEnter the ID of the account to check its balance: ");
+                        scanf("%d", &checkbalance_1_arg);
+
                         result_6 = checkbalance_1(&checkbalance_1_arg, clnt);
-                        if (result_6 == (int *) NULL) {
+                        if (result_6 == (float *) NULL) {
                             clnt_perror (clnt, "call failed");
                         }
+                        else { // CALL SUCCESSFULL
+                            if (*result_6 != -9999) {
+                                printf("Account %d has a balance of %f.\n", checkbalance_1_arg, *result_6);
+                            }
+                            else {
+                                printf("ERROR! Account %d does not exist!\n", checkbalance_1_arg);
+                            }
+                        }
                         break;
+
                     default:
                         printf("You informed an invalid operation number!");
                         break;
@@ -154,7 +184,7 @@ void bank_prog_1(char *host) {
                         }
                     case 3:
                         result_6 = checkbalance_1(&checkbalance_1_arg, clnt);
-                        if (result_6 == (int *) NULL) {
+                        if (result_6 == (float *) NULL) {
                             clnt_perror (clnt, "call failed");
                         }
                     default:

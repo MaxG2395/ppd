@@ -16,6 +16,6 @@ program BANK_PROG
     int authAccount(int) = 3;
     int deposit(aux_struct) = 4;
     int withdraw(aux_struct) = 5;
-    int checkBalance(int) = 6;
+    float checkBalance(int) = 6;
   } = 1;
 } = 0x12345000;

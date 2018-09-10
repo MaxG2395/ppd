@@ -41,9 +41,13 @@ openaccount_1_svc(int *argp, struct svc_req *rqstp)
       accountList[accountID].sum = 0;
       result = accountID;
 
-      printf("LOG: account %d successfully created.\n", accountID);
+      printf("LOG: account %d successfully created.\n\n", accountID);
     }
-    else result = -1;
+    else
+    {
+      printf("LOG: account %d was not created.\n\n", accountID);
+      result = -1;
+    }
 
     return &result;
 }
@@ -62,9 +66,13 @@ closeaccount_1_svc(int *argp, struct svc_req *rqstp)
         accountList[accountID].sum = 0;
         result = 0;
 
-        printf("LOG: account %d successfully closed.\n", accountID);
+        printf("LOG: account %d successfully closed.\n\n", accountID);
     }
-    else result = accountID;
+    else
+    {
+      printf("LOG: account %d was not closed.\n\n", accountID);
+      result = -1;
+    }
 
     return &result;
 }
@@ -73,10 +81,9 @@ int *
 authaccount_1_svc(int *argp, struct svc_req *rqstp)
 {
     static int  result;
+    int accountID = *argp;
 
-    /*
-     * insert server code here
-     */
+    result = checkIfAccountAlreadyExists(accountID);
 
     return &result;
 }
@@ -89,16 +96,20 @@ deposit_1_svc(aux_struct *argp, struct svc_req *rqstp)
     int accountID = (*argp).id;
     float accountSum = (*argp).sum;
 
-    printf("LOG: depositAccount(%d) to amount %f service called...\n", accountID), accountSum;
+    printf("LOG: depositAccount(%d, %f) service called...\n", accountID, accountSum);
 
     if (checkIfAccountAlreadyExists(accountID) == -1)
     {
         accountList[accountID].sum = accountList[accountID].sum + accountSum;
         result = 0;
 
-        printf("LOG: account %d successfully deposited %f.\n", accountID, accountSum);
+        printf("LOG: account %d successfully deposited %f.\n\n", accountID, accountSum);
     }
-    else result = accountID;
+    else
+    {
+        printf("LOG: %f was not deposited in account %d.\n\n", accountSum, accountID);
+        result = accountID;
+    }
 
     return &result;
 }
@@ -106,23 +117,45 @@ deposit_1_svc(aux_struct *argp, struct svc_req *rqstp)
 int *
 withdraw_1_svc(aux_struct *argp, struct svc_req *rqstp)
 {
-    static int  result;
+  static int result;
 
-    /*
-     * insert server code here
-     */
+  int accountID = (*argp).id;
+  float accountSum = (*argp).sum;
 
-    return &result;
+  printf("LOG: withdrawAccount(%d, %f) service called...\n", accountID, accountSum);
+
+  if (checkIfAccountAlreadyExists(accountID) == -1)
+  {
+      accountList[accountID].sum = accountList[accountID].sum - accountSum;
+      result = 0;
+
+      printf("LOG: account %d successfully withdrew %f.\n\n", accountID, accountSum);
+  }
+  else
+  {
+      printf("LOG: %f was not withdrawn from the account %d.\n", accountSum, accountID);
+      result = accountID;
+  }
+
+  return &result;
 }
 
-int *
+float *
 checkbalance_1_svc(int *argp, struct svc_req *rqstp)
 {
-    static int  result;
+    static float  result;
 
-    /*
-     * insert server code here
-     */
+    int accountID = *argp;
+
+    printf("LOG: checkBalance(%d) service called...\n", accountID);
+
+    if (checkIfAccountAlreadyExists(accountID) == -1)
+    {
+        result = accountList[accountID].sum;
+
+        printf("LOG: account %d just checked its balance %f.\n\n", accountID, result);
+    }
+    else result = -9999;
 
     return &result;
 }
